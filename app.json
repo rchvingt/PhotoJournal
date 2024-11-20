@@ -21,7 +21,10 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.yours.photojournal",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +37,11 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f3fde570-7a79-4201-ac11-92b6179eeff8"
+      }
+    }
   }
 }
