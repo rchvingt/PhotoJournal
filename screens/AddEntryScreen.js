@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Text, SafeAreaView } from 'react-native';
 import { saveJournalEntry } from "../services/storages";
 import * as ImagePicker from 'expo-image-picker';
 
 import ImageViewer from '../components/ImageViewer';
+import theme from '../theme';
+import CustomButton from '../components/CustomButton';
+import CustomButtonSmall from '../components/CustomButtonSmall';
 
 
 const AddEntryScreen = ({ navigation }) => {
@@ -78,52 +81,85 @@ const AddEntryScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                placeholder="Title"
-                value={title}
-                onChangeText={setTitle}
-                style={styles.input}
-            />
-            <TextInput
-                placeholder="Description"
-                value={description}
-                onChangeText={setDescription}
-                style={[styles.input, { height: 100 }]}
-                multiline
-                numberOfLines={5}
-            />
+        <SafeAreaView style={styles.container}>
+            <View style={{ flex: 1, padding: theme.spacing.medium, }}>
+                <TextInput
+                    placeholder="Title"
+                    value={title}
+                    onChangeText={setTitle}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder="Description"
+                    value={description}
+                    onChangeText={setDescription}
+                    style={[styles.input, { height: 100 }]}
+                    multiline
+                    numberOfLines={5}
+                />
 
-            <View style={styles.imageContainer}>
-                <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage ? selectedImage : capture} />
-            </View>
+                <View style={styles.imageContainer}>
+                    <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage ? selectedImage : capture} />
+                </View>
 
-            {
-                capture && <Button title="Clear Photo" onPress={() => clearImage()} />
-            }
+                <View style={styles.buttonRow}>
+                    <CustomButtonSmall
+                        title="Gallery"
+                        onPress={() => onPressCamera('gallery')}
+                        style={styles.button}
+                    />
+                    <CustomButtonSmall
+                        title="Capture"
+                        onPress={() => onPressCamera()}
+                        style={styles.button}
+                    />
+                    {/* {capture && (
+                        <CustomButtonSmall
+                            title="Clear"
+                            onPress={() => clearImage()}
+                            style={styles.button}
+                        />
+                    )} */}
+                </View>
+                <CustomButton
+                    title="Save Entry"
+                    onPress={handleSaveEntry}
+                    style={styles.customButton}
+                /></View>
 
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button title="Choose a photo" onPress={() => onPressCamera('gallery')} />
-                <Button title="Capture a photo" onPress={() => onPressCamera()} />
-            </View>
-
-            <Button title="Save Entry" onPress={handleSaveEntry} />
-        </View>
+        </SafeAreaView >
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16 },
+
+    container: {
+        flex: 1,
+        backgroundColor: theme.colors.background,
+    },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#d5d7da',
         borderRadius: 5,
         marginBottom: 16,
         padding: 10,
     },
-
     imageContainer: {
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 16,
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly', // Spacing between buttons
+        alignItems: 'center', // Align buttons vertically
+        marginTop: 0,
+        flex: 1
+    },
+    button: {
+        flex: 1, // Allow buttons to evenly share available space
+        marginHorizontal: 8, // Add spacing between buttons
     },
 });
 
