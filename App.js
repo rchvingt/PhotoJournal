@@ -15,14 +15,16 @@ import AddEntryScreen from './screens/AddEntryScreen';
 export default function App() {
   const Stack = createNativeStackNavigator();
 
-function RootStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="AddEntry" component={AddEntryScreen} />
-    </Stack.Navigator>
-  );
-}
+  function RootStack() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="AddEntry" component={AddEntryScreen} options={{
+          title: 'Add Entry'
+        }} />
+      </Stack.Navigator>
+    );
+  }
   return (
     <NavigationContainer>
       <RootStack />
