@@ -1,11 +1,28 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fetchData } from "../services/api"; 
-import { getJournalEntries, saveJournalEntry } from "../services/storages"; // Impor fungsi 
+import { saveJournalEntry } from "../services/storages"; 
+import * as ImagePicker from 'expo-image-picker';
+
+import ImageViewer from '../components/ImageViewer';
+
 const AddEntryScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [selectedImage, setSelectedImage] = useState('');
+  
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    } else {
+      alert('You did not select any image.');
+    }
+  };
 
   const handleSaveEntry = async () => {
     try {
@@ -24,6 +41,9 @@ const AddEntryScreen = ({ navigation }) => {
     }
   };
 
+  const PlaceholderImage = require('../assets/example.jpg');
+
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -39,6 +59,10 @@ const AddEntryScreen = ({ navigation }) => {
         style={styles.input}
         multiline
       />
+      <Button title="Choose a photo" onPress={pickImageAsync} />
+      <View style={styles.imageContainer}>
+      <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
+      </View>
       <Button title="Save Entry" onPress={handleSaveEntry} />
     </View>
   );
@@ -52,6 +76,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 16,
     padding: 10,
+  },
+  imageContainer: {
+    flex: 1,
   },
 });
 
